@@ -1,20 +1,23 @@
 /* Ogólne style strony */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    background-color: #fff8e1;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    color: #333;
 }
 
 /* Nagłówek strony */
 header {
     position: relative;
-    background-color: #f4f4f4;
-    padding: 10px;
+    background-color: #ffeb3b;
+    padding: 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 2px solid #ddd;
+    border-bottom: 3px solid #ffc107;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Logo */
@@ -25,13 +28,17 @@ header {
     position: absolute;
     left: 10px;
     top: 10px;
+    border: 2px dashed #333;
 }
 
 /* Nagłówek strony */
 h1 {
     margin: 0;
-    text-align: center;
     flex: 1;
+    text-align: center;
+    font-size: 2.5em;
+    color: #d84315;
+    text-shadow: 1px 1px #fff;
 }
 
 /* Nawigacja */
@@ -54,12 +61,23 @@ nav ul li {
 
 nav ul li a {
     text-decoration: none;
+    color: #d84315;
+    font-weight: bold;
+    font-size: 1.2em;
+    text-shadow: 1px 1px #fff;
+}
+
+nav ul li a:hover {
     color: #333;
 }
 
 /* Główna sekcja */
 main {
     padding: 20px;
+    background: #ffccbc;
+    border: 3px dashed #ff7043;
+    margin: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Narzędzia do rysowania i animacji */
@@ -67,6 +85,20 @@ main {
     display: flex;
     gap: 10px;
     margin-bottom: 20px;
+}
+
+.toolbar button {
+    background-color: #ff7043;
+    color: white;
+    border: 2px solid #d84315;
+    padding: 10px 15px;
+    font-size: 1em;
+    cursor: pointer;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.toolbar button:hover {
+    background-color: #d84315;
 }
 
 .frame-bar {
@@ -82,7 +114,9 @@ main {
 
 /* Canvas */
 canvas {
-    border: 1px solid #ccc;
+    border: 3px dashed #ff7043;
+    background-color: #fffde7;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Modal dla instrukcji */
@@ -123,10 +157,11 @@ canvas {
 
 /* Klasy dla ramek animacji */
 .frame {
-    width: 200px;
-    height: 150px;
-    border: 1px solid #ccc;
+    width: 100px;
+    height: 75px;
+    border: 2px dashed #d84315;
     background-size: cover;
     background-position: center;
     cursor: pointer;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
