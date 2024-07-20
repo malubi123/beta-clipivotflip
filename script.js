@@ -17,8 +17,7 @@ let currentColor = '#000000';
 let frames = [];
 let currentFrameIndex = 0;
 let controlPoints = [];
-let outlineAlpha = 1.0;
-let outlineColor = 'rgba(255, 0, 0, 1.0)';
+let fadingInterval;
 
 canvas.addEventListener('mousedown', startDrawing);
 canvas.addEventListener('mouseup', stopDrawing);
@@ -49,7 +48,7 @@ colorPicker.addEventListener('input', (event) => {
 addFrameBtn.addEventListener('click', addFrame);
 document.addEventListener('keydown', (event) => {
     if (event.code === 'Space') {
-        toggleOutline();
+        addFrame();
     }
 });
 
@@ -93,6 +92,7 @@ function addFrame() {
     const frame = canvas.toDataURL();
     frames.push(frame);
     updateFrameBar();
+    fadeOutCanvas();
 }
 
 function updateFrameBar() {
@@ -173,32 +173,23 @@ function exportMp4Animation() {
     }, 1000);
 }
 
-function toggleOutline() {
-    // Save the current canvas content
-    const canvasContent = canvas.toDataURL();
-    // Clear the canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    // Draw the outline
-    const outline = new Image();
-    outline.src = canvasContent;
-    outline.onload = () => {
-        ctx.drawImage(outline, 0, 0);
-        ctx.globalAlpha = 0.5;
-        ctx.strokeStyle = 'red';
-        ctx.strokeRect(0, 0, canvas.width, canvas.height);
-        ctx.globalAlpha = 1.0;
-    };
-
-    // Hide all content except outline
+function fadeOutCanvas() {
+    if (fadingInterval) {
+        clearInterval(fadingInterval);
+    }
+    
     let alpha = 1.0;
-    const interval = setInterval(() => {
-        alpha -= 0.1;
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    
+    fadingInterval = setInterval(() => {
+        alpha -= 0.05;
         if (alpha <= 0) {
-            clearInterval(interval);
+            clearInterval(fadingInterval);
             ctx.clearRect(0, 0, canvas.width, canvas.height);
         } else {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.globalAlpha = alpha;
-            ctx.drawImage(outline, 0, 0);
+            ctx.putImageData(imageData, 0, 0);
             ctx.globalAlpha = 1.0;
         }
     }, 100);
