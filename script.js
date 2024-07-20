@@ -16,6 +16,9 @@ let isControlPointMode = false;
 let currentColor = '#000000';
 let frames = [];
 let currentFrameIndex = 0;
+let controlPoints = [];
+let outlineAlpha = 1.0;
+let outlineColor = 'rgba(255, 0, 0, 1.0)';
 
 canvas.addEventListener('mousedown', startDrawing);
 canvas.addEventListener('mouseup', stopDrawing);
@@ -46,7 +49,7 @@ colorPicker.addEventListener('input', (event) => {
 addFrameBtn.addEventListener('click', addFrame);
 document.addEventListener('keydown', (event) => {
     if (event.code === 'Space') {
-        addFrame();
+        toggleOutline();
     }
 });
 
@@ -55,14 +58,22 @@ exportGifBtn.addEventListener('click', exportGifAnimation);
 exportMp4Btn.addEventListener('click', exportMp4Animation);
 
 function startDrawing(event) {
-    isDrawing = true;
-    ctx.beginPath();
-    ctx.moveTo(event.offsetX, event.offsetY);
+    if (isControlPointMode) {
+        controlPoints.push({ x: event.offsetX, y: event.offsetY });
+        ctx.fillStyle = currentColor;
+        ctx.fillRect(event.offsetX - 2, event.offsetY - 2, 4, 4);
+    } else {
+        isDrawing = true;
+        ctx.beginPath();
+        ctx.moveTo(event.offsetX, event.offsetY);
+    }
 }
 
 function stopDrawing() {
-    isDrawing = false;
-    ctx.closePath();
+    if (!isControlPointMode) {
+        isDrawing = false;
+        ctx.closePath();
+    }
 }
 
 function draw(event) {
@@ -70,8 +81,6 @@ function draw(event) {
 
     if (isErasing) {
         ctx.clearRect(event.offsetX, event.offsetY, 10, 10);
-    } else if (isControlPointMode) {
-        // Implementacja trybu punktów kontrolnych
     } else {
         ctx.strokeStyle = currentColor;
         ctx.lineWidth = 2;
@@ -159,7 +168,38 @@ function exportMp4Animation() {
         const url = URL.createObjectURL(output);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'animation.webm';
+        a.download = 'animation.mp4';
         a.click();
     }, 1000);
+}
+
+function toggleOutline() {
+    // Save the current canvas content
+    const canvasContent = canvas.toDataURL();
+    // Clear the canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // Draw the outline
+    const outline = new Image();
+    outline.src = canvasContent;
+    outline.onload = () => {
+        ctx.drawImage(outline, 0, 0);
+        ctx.globalAlpha = 0.5;
+        ctx.strokeStyle = 'red';
+        ctx.strokeRect(0, 0, canvas.width, canvas.height);
+        ctx.globalAlpha = 1.0;
+    };
+
+    // Hide all content except outline
+    let alpha = 1.0;
+    const interval = setInterval(() => {
+        alpha -= 0.1;
+        if (alpha <= 0) {
+            clearInterval(interval);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        } else {
+            ctx.globalAlpha = alpha;
+            ctx.drawImage(outline, 0, 0);
+            ctx.globalAlpha = 1.0;
+        }
+    }, 100);
 }
