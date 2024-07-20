@@ -9,6 +9,9 @@ const exportGifBtn = document.getElementById('exportGifBtn');
 const exportMp4Btn = document.getElementById('exportMp4Btn');
 const addFrameBtn = document.getElementById('addFrameBtn');
 const framesContainer = document.getElementById('framesContainer');
+const logo = document.getElementById('logo');
+const instructionModal = document.getElementById('instructionModal');
+const closeModal = document.getElementById('closeModal');
 
 let isDrawing = false;
 let isErasing = false;
@@ -55,6 +58,20 @@ document.addEventListener('keydown', (event) => {
 playBtn.addEventListener('click', playAnimation);
 exportGifBtn.addEventListener('click', exportGifAnimation);
 exportMp4Btn.addEventListener('click', exportMp4Animation);
+
+logo.addEventListener('click', () => {
+    instructionModal.style.display = 'block';
+});
+
+closeModal.addEventListener('click', () => {
+    instructionModal.style.display = 'none';
+});
+
+window.addEventListener('click', (event) => {
+    if (event.target == instructionModal) {
+        instructionModal.style.display = 'none';
+    }
+});
 
 function startDrawing(event) {
     if (isControlPointMode) {
