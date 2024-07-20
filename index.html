@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animacja</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="toolbar">
+        <button id="drawBtn">Rysowanie</button>
+        <button id="eraseBtn">Ścieranie</button>
+        <button id="pointBtn">Punkty kontrolne</button>
+        <input type="color" id="colorPicker">
+        <button id="playBtn">Odtwórz</button>
+        <button id="exportGifBtn">Eksportuj GIF</button>
+        <button id="exportMp4Btn">Eksportuj MP4</button>
+    </div>
+    <canvas id="canvas" width="800" height="600"></canvas>
+    <div class="frame-bar">
+        <button id="addFrameBtn">Dodaj klatkę (spacja)</button>
+        <div id="framesContainer"></div>
+    </div>
+    <script src="script.js"></script>
+    <script src="whammy.js"></script>
+    <script src="gif.js"></script>
+</body>
+</html>
